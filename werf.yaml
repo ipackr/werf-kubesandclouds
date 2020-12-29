@@ -13,31 +13,30 @@ from: nginx:latest
 
 ansible:
   install:
+    - debug:
+        msg: "Start install"
+    - file:
+        path: /usr/share/nginx/html
+        mode: 0755
+    - file:
+        path: /web
+        state: directory
+        mode: 0755
+    - debug:
+        msg: "End install"
 
-  - debug:
-      msg: 'Start install'
-  - file:
-      path: /usr/share/nginx/html
-      mode: 0755
-  - file:
-      path: /web
-      state: directory
-      mode: 0755
-  - debug:
-      msg: 'End install'
-      
 git:
-- add: /web
-  to: /usr/share/nginx/html
-  owner: nginx
-      
+  - add: /web
+    to: /usr/share/nginx/html
+    owner: nginx
+
 #shell:
 #  beforeInstall:
 #  - mkdir /web
-  
+
 docker:
   WORKDIR: /web
   CMD: ["nginx", "-g", "daemon off;"]
-  EXPOSE: '80'
+  EXPOSE: "80"
   ENV:
-    BUILDER: werf-custom 
+    BUILDER: werf-custom
